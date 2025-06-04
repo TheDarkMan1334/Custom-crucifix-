@@ -1,4 +1,4 @@
- local spawnedRooms = {} -- Track rooms that already spawned crucifix
+local spawnedRooms = {} -- Track rooms that already spawned crucifix
 
 function spawncruxy(posy)
     local currentRoom = game.ReplicatedStorage.GameData.LatestRoom.Value
@@ -33,24 +33,22 @@ function spawncruxy(posy)
     prompty.Triggered:Connect(function()
         crucifixTool:Destroy()
 
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/penguinManiack/Crucifix/main/Crucifix.lua'))()
+        -- crucifix script
+        local success, err = pcall(function()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/penguinManiack/Crucifix/main/Crucifix.lua'))()
+        end)
+        if not success then
+            warn("Failed to load crucifix script:", err)
+        end
 
+        -- Hiện chữ caption
         local Plr = game.Players.LocalPlayer
-        local Char = Plr.Character or Plr.CharacterAdded:Wait()
-        local Hum = Char:WaitForChild("Humanoid")
-        local RA = Char:WaitForChild("RightUpperArm")
-        local LA = Char:WaitForChild("LeftUpperArm")
-        local RC1 = RA.RightShoulder.C1
-        local LC1 = LA.LeftShoulder.C1
-
-        RA.Name = "R_Arm"
-        LA.Name = "L_Arm"
-        RA.RightShoulder.C1 = RC1 * CFrame.Angles(math.rad(-90), math.rad(-15), 0)
-        LA.LeftShoulder.C1 = LC1 * CFrame.new(-0.2, -0.3, -0.5) * CFrame.Angles(math.rad(-125), math.rad(25), math.rad(25))
-
-        require(Plr.PlayerGui.MainUI.Initiator.Main_Game).caption("You grab the crucifix.", true)
-        wait(3)
-        require(Plr.PlayerGui.MainUI.Initiator.Main_Game).caption("It only works with custom entities.", true)
+        local gui = Plr.PlayerGui.MainUI.Initiator.Main_Game
+        if gui then
+            require(gui).caption("You grab the crucifix.", true)
+            wait(3)
+            require(gui).caption("It only works with custom entities.", true)
+        end
     end)
 
     spawnedRooms[currentRoom] = true
@@ -72,3 +70,4 @@ game.ReplicatedStorage.GameData.LatestRoom.Changed:Connect(function()
         end
     end
 end)
+
