@@ -41,7 +41,7 @@ function spawncruxy(posy)
             warn("Failed to load crucifix script:", err)
         end
 
-        -- Hiện chữ caption
+        -- caption
         local Plr = game.Players.LocalPlayer
         local gui = Plr.PlayerGui.MainUI.Initiator.Main_Game
         if gui then
